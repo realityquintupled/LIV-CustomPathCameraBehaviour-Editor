@@ -22,6 +22,24 @@ public class PathRenderer : MonoBehaviour {
         UIManager.instance.SetMaxSpeed(transform.childCount);
     }
 
+    public void UpdatePoint(int point, Vector3 pos) {
+        points[point] = pos;
+    }
+
+    public void MovePoint(int point, int direction) {
+        int newIndex = (point + direction + points.Count) % points.Count;
+        Vector3 pointPos = points[point]; 
+        points.RemoveAt(point);
+        if (newIndex == points.Count)
+            points.Add(pointPos);
+        else
+            points.Insert(newIndex, pointPos);
+    }
+
+    public void RemovePoint(int point) {
+        points.RemoveAt(point);
+    }
+
     public void ClearPoints() {
         foreach (Transform child in transform)
             Destroy(child.gameObject);

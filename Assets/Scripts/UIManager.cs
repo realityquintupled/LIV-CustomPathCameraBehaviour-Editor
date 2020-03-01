@@ -88,6 +88,7 @@ public class UIManager : MonoBehaviour {
     public void UpdateXCoordinate(string x) {
         if (point != null && float.TryParse(x, out float xCoord)) {
             point.transform.position = new Vector3(xCoord, point.transform.position.y, point.transform.position.z);
+            pathRenderer.UpdatePoint(point.transform.GetSiblingIndex(), point.transform.position);
             pathRenderer.Recalculate();
         }
     }
@@ -95,6 +96,7 @@ public class UIManager : MonoBehaviour {
     public void UpdateYCoordinate(string y) {
         if (point != null && float.TryParse(y, out float yCoord)) {
             point.transform.position = new Vector3(point.transform.position.x, yCoord, point.transform.position.z);
+            pathRenderer.UpdatePoint(point.transform.GetSiblingIndex(), point.transform.position);
             pathRenderer.Recalculate();
         }
 }
@@ -102,6 +104,7 @@ public class UIManager : MonoBehaviour {
     public void UpdateZCoordinate(string z) {
         if (point != null && float.TryParse(z, out float zCoord)) {
             point.transform.position = new Vector3(point.transform.position.x, point.transform.position.y, zCoord);
+            pathRenderer.UpdatePoint(point.transform.GetSiblingIndex(), point.transform.position);
             pathRenderer.Recalculate();
         }
     }
@@ -185,6 +188,7 @@ public class UIManager : MonoBehaviour {
             return;
         int newDirection = (int)(newAxis.x * 4 / 3);
         if (newDirection != direction && newDirection != 0) {
+            pathRenderer.MovePoint(point.transform.GetSiblingIndex(), newDirection);
             point.transform.SetSiblingIndex((point.transform.GetSiblingIndex() + newDirection + point.transform.parent.childCount) % point.transform.parent.childCount);
             pathRenderer.Recalculate();
         }

@@ -30,6 +30,8 @@ public class PointManipulator : MonoBehaviour {
         if (point != null) {
             relative.transform.position += transform.forward.normalized * speed * Time.deltaTime * direction;
             point.transform.position = relative.transform.position;
+            if(point.tag != "FixedPoint")
+                pathRenderer.UpdatePoint(point.transform.GetSiblingIndex(), point.transform.position);
             pathRenderer.Recalculate();
         } else {
             if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 20)) {
@@ -63,6 +65,7 @@ public class PointManipulator : MonoBehaviour {
     public void RemovePoint(SteamVR_Behaviour_Boolean behaviour, SteamVR_Input_Sources source, bool state) {
         if (Physics.Raycast(transform.position, transform.forward, out RaycastHit hit, 20)) {
             if (hit.transform.tag == "ControlPoint") {
+                pathRenderer.RemovePoint(hit.transform.GetSiblingIndex());
                 DestroyImmediate(hit.transform.gameObject);
                 pathRenderer.Recalculate();
                 UIManager.instance.coordinatesPanel.SetActive(false);
